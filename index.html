@@ -6,216 +6,72 @@
   <meta name="theme-color" content="#f6f7fb" />
   <title>Voxora — голосовой ассистент для бизнеса</title>
   <style>
-    :root {
-      color-scheme: light;
-      --ink: #171923;
-      --muted: #737789;
-      --line: #e8e9f0;
-      --purple: #7157e8;
-      --purple-dark: #5d43d2;
-      --surface: #fff;
-      --wash: #f6f7fb;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-width: 320px;
-      min-height: 100vh;
-      color: var(--ink);
-      background: radial-gradient(ellipse at 50% -20%, #e8e3ff 0, transparent 48%), var(--wash);
-    }
-    button, textarea { font: inherit; }
-    .topbar {
-      height: 76px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: 1180px;
-      padding: 0 28px;
-      margin: 0 auto;
-    }
-    .brand { display: flex; align-items: center; gap: 11px; font-size: 19px; font-weight: 750; letter-spacing: -.6px; }
-    .brand-mark {
-      display: grid; place-items: center; width: 35px; height: 35px; border-radius: 12px;
-      color: #fff; background: linear-gradient(145deg, #927cff, #6247dd);
-      box-shadow: 0 5px 14px #7157e83b;
-    }
-    .brand-mark svg { width: 19px; height: 19px; }
-    .top-note { color: var(--muted); font-size: 13px; }
-    main { width: min(100% - 32px, 760px); margin: 58px auto 80px; }
-    .intro { text-align: center; margin-bottom: 34px; }
-    .eyebrow {
-      display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px;
-      border: 1px solid #e7e2ff; border-radius: 999px; background: #ffffffa8;
-      color: #634bd4; font-size: 12px; font-weight: 650; letter-spacing: .02em;
-    }
-    .eyebrow-dot { width: 7px; height: 7px; border-radius: 50%; background: #8068ed; box-shadow: 0 0 0 3px #8068ed20; }
-    h1 { margin: 18px 0 10px; font-size: clamp(34px, 6vw, 48px); line-height: 1.08; letter-spacing: -2px; }
-    .subtitle { max-width: 510px; margin: 0 auto; color: var(--muted); font-size: 16px; line-height: 1.6; }
-    .card {
-      padding: 32px; border: 1px solid #e9eaf1; border-radius: 20px; background: var(--surface);
-      box-shadow: 0 18px 55px #2020440b, 0 2px 7px #20204406;
-    }
-    .section-heading { display: flex; align-items: flex-start; gap: 13px; margin-bottom: 25px; }
-    .step-number { display: grid; flex: 0 0 30px; place-items: center; width: 30px; height: 30px; border-radius: 10px; background: #f0edff; color: #654bdc; font-size: 13px; font-weight: 750; }
-    h2 { margin: 1px 0 5px; font-size: 17px; letter-spacing: -.3px; }
-    .section-description { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
-    .field-label { display: flex; justify-content: space-between; gap: 12px; margin: 0 0 9px; font-size: 13px; font-weight: 650; }
-    .optional { color: #989bab; font-weight: 450; }
-    textarea {
-      display: block; width: 100%; min-height: 132px; resize: vertical; padding: 14px 15px;
-      border: 1px solid var(--line); border-radius: 12px; outline: none; color: var(--ink);
-      background: #fff; font-size: 14px; line-height: 1.55; transition: border-color .18s, box-shadow .18s;
-    }
-    textarea::placeholder { color: #a0a3b1; }
-    textarea:focus { border-color: #9c8bf2; box-shadow: 0 0 0 4px #7157e815; }
-    .hint { margin: 8px 0 0; color: #898d9e; font-size: 12px; }
-    .divider { height: 1px; margin: 27px 0 25px; background: #eff0f4; }
-    .voice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-    .voice-option { position: relative; }
-    .voice-option input { position: absolute; opacity: 0; pointer-events: none; }
-    .voice-card {
-      display: flex; align-items: center; gap: 13px; min-height: 76px; padding: 14px;
-      border: 1px solid var(--line); border-radius: 13px; cursor: pointer; transition: .18s ease;
-    }
-    .voice-card:hover { border-color: #c9c1f7; background: #fcfbff; }
-    .voice-option input:checked + .voice-card { border-color: var(--purple); background: #f8f6ff; box-shadow: 0 0 0 3px #7157e812; }
-    .voice-option input:focus-visible + .voice-card { outline: 3px solid #7157e855; outline-offset: 2px; }
-    .voice-icon { display: grid; flex: 0 0 42px; place-items: center; width: 42px; height: 42px; border-radius: 12px; background: #f2f3f8; color: #616579; }
-    .voice-option input:checked + .voice-card .voice-icon { background: #ebe6ff; color: #674ede; }
-    .voice-icon svg { width: 21px; height: 21px; }
-    .voice-title { font-size: 14px; font-weight: 650; }
-    .voice-caption { margin-top: 4px; color: var(--muted); font-size: 12px; }
-    .radio-dot { width: 17px; height: 17px; margin-left: auto; border: 1.5px solid #d5d6e0; border-radius: 50%; }
-    .voice-option input:checked + .voice-card .radio-dot { border: 5px solid var(--purple); background: white; }
-    .submit-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 28px; }
-    .privacy-note { display: flex; align-items: center; gap: 7px; color: #85899a; font-size: 12px; }
-    .privacy-note svg { flex: 0 0 15px; width: 15px; height: 15px; }
-    .primary-button {
-      display: inline-flex; justify-content: center; align-items: center; gap: 9px; min-height: 48px; padding: 0 20px;
-      border: 0; border-radius: 12px; background: var(--purple); color: white; cursor: pointer;
-      font-size: 14px; font-weight: 650; box-shadow: 0 5px 13px #7157e833; transition: transform .16s, background .16s, box-shadow .16s;
-    }
-    .primary-button:hover { transform: translateY(-1px); background: var(--purple-dark); box-shadow: 0 8px 17px #7157e83b; }
-    .primary-button:active { transform: translateY(0); }
-    .primary-button svg { width: 17px; height: 17px; }
-    .result { display: none; margin-top: 18px; padding: 16px 18px; border: 1px solid #d9eddf; border-radius: 12px; background: #f4fbf6; color: #28643a; font-size: 13px; line-height: 1.5; }
-    .result.visible { display: flex; align-items: flex-start; gap: 10px; }
-    .result svg { flex: 0 0 18px; width: 18px; height: 18px; margin-top: 1px; }
-    .result strong { display: block; margin-bottom: 2px; }
-    .footer { margin-top: 20px; text-align: center; color: #9a9cab; font-size: 12px; }
-    @media (max-width: 560px) {
-      .topbar { height: 66px; padding: 0 20px; }
-      .top-note { font-size: 11px; }
-      main { margin-top: 40px; }
-      .intro { margin-bottom: 25px; }
-      .subtitle { font-size: 14px; }
-      .card { padding: 22px 18px; border-radius: 17px; }
-      .voice-grid { gap: 9px; }
-      .voice-card { gap: 9px; padding: 11px 9px; }
-      .voice-icon { flex-basis: 36px; width: 36px; height: 36px; }
-      .voice-title { font-size: 13px; }
-      .voice-caption { font-size: 11px; }
-      .submit-row { align-items: stretch; flex-direction: column; }
-      .primary-button { width: 100%; }
-    }
+    :root{color-scheme:light;--ink:#171923;--muted:#737789;--line:#e8e9f0;--purple:#7157e8;--purple-dark:#5d43d2;--surface:#fff;--wash:#f6f7fb;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{box-sizing:border-box}body{margin:0;min-width:320px;min-height:100vh;color:var(--ink);background:radial-gradient(ellipse at 50% -20%,#e8e3ff 0,transparent 48%),var(--wash)}button,textarea,input{font:inherit}.topbar{height:76px;display:flex;align-items:center;justify-content:space-between;max-width:1180px;padding:0 28px;margin:auto}.brand{display:flex;align-items:center;gap:11px;font-size:19px;font-weight:750;letter-spacing:-.6px}.brand-mark{display:grid;place-items:center;width:35px;height:35px;border-radius:12px;color:#fff;background:linear-gradient(145deg,#927cff,#6247dd);box-shadow:0 5px 14px #7157e83b}.brand-mark svg{width:19px;height:19px}.top-note{color:var(--muted);font-size:13px}main{width:min(100% - 32px,760px);margin:52px auto 80px}.intro{text-align:center;margin-bottom:30px}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid #e7e2ff;border-radius:999px;background:#ffffffa8;color:#634bd4;font-size:12px;font-weight:650}.eyebrow-dot{width:7px;height:7px;border-radius:50%;background:#8068ed;box-shadow:0 0 0 3px #8068ed20}h1{margin:18px 0 10px;font-size:clamp(34px,6vw,48px);line-height:1.08;letter-spacing:-2px}.subtitle{max-width:510px;margin:auto;color:var(--muted);font-size:16px;line-height:1.6}.card{padding:30px;border:1px solid #e9eaf1;border-radius:20px;background:var(--surface);box-shadow:0 18px 55px #2020440b,0 2px 7px #20204406}.section-heading{display:flex;align-items:flex-start;gap:13px;margin-bottom:23px}.step{display:grid;flex:0 0 30px;place-items:center;width:30px;height:30px;border-radius:10px;background:#f0edff;color:#654bdc;font-size:13px;font-weight:750}h2{margin:1px 0 5px;font-size:17px}.desc{margin:0;color:var(--muted);font-size:13px;line-height:1.5}.label{display:block;margin:0 0 9px;font-size:13px;font-weight:650}textarea{display:block;width:100%;min-height:122px;resize:vertical;padding:14px 15px;border:1px solid var(--line);border-radius:12px;outline:none;color:var(--ink);background:#fff;font-size:14px;line-height:1.55}textarea:focus,input:focus{border-color:#9c8bf2;box-shadow:0 0 0 4px #7157e815}.hint{margin:8px 0 0;color:#898d9e;font-size:12px}.divider{height:1px;margin:25px 0;background:#eff0f4}.voice-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.voice-option{position:relative}.voice-option input{position:absolute;opacity:0}.voice-card{display:flex;align-items:center;gap:12px;min-height:70px;padding:12px;border:1px solid var(--line);border-radius:13px;cursor:pointer}.voice-option input:checked+.voice-card{border-color:var(--purple);background:#f8f6ff;box-shadow:0 0 0 3px #7157e812}.voice-option input:focus-visible+.voice-card{outline:3px solid #7157e855}.voice-icon{display:grid;flex:0 0 40px;place-items:center;width:40px;height:40px;border-radius:12px;background:#f2f3f8;color:#616579}.voice-icon svg{width:21px;height:21px}.voice-title{font-size:14px;font-weight:650}.voice-caption{display:block;margin-top:4px;color:var(--muted);font-size:12px}.radio-dot{width:17px;height:17px;margin-left:auto;border:1.5px solid #d5d6e0;border-radius:50%}.voice-option input:checked+.voice-card .radio-dot{border:5px solid var(--purple)}.submit-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:25px}.privacy{display:flex;align-items:center;gap:7px;color:#85899a;font-size:12px}.privacy svg{flex:0 0 15px;width:15px;height:15px}.primary,.send,.mic{display:inline-flex;justify-content:center;align-items:center;gap:9px;min-height:47px;padding:0 19px;border:0;border-radius:12px;background:var(--purple);color:white;cursor:pointer;font-size:14px;font-weight:650;transition:.16s}.primary:hover,.send:hover,.mic:hover{background:var(--purple-dark);transform:translateY(-1px)}button:disabled{opacity:.55;cursor:not-allowed;transform:none}.primary svg,.send svg,.mic svg{width:18px;height:18px}.chat{display:none;margin-top:22px}.chat.active{display:block}.chat-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:17px;border-bottom:1px solid #eff0f4}.assistant-name{display:flex;align-items:center;gap:11px}.avatar{display:grid;place-items:center;width:40px;height:40px;border-radius:14px;background:#f0edff;color:#674ede}.avatar svg{width:21px;height:21px}.assistant-name strong{display:block;font-size:14px}.online{display:flex;align-items:center;gap:6px;margin-top:4px;color:#6b7280;font-size:12px}.online i{width:7px;height:7px;border-radius:50%;background:#32b36a}.reset{padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:#fff;color:#626679;cursor:pointer;font-size:12px}.messages{display:flex;flex-direction:column;gap:12px;min-height:150px;max-height:380px;overflow:auto;padding:18px 2px}.message{max-width:86%;padding:11px 14px;border-radius:14px;font-size:14px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}.message.bot{align-self:flex-start;border:1px solid #ececf2;background:#fafaff}.message.user{align-self:flex-end;background:#7157e8;color:white}.message.error{align-self:flex-start;border:1px solid #f1d4d4;background:#fff7f7;color:#9a3434}.composer{display:flex;align-items:flex-end;gap:9px;padding-top:14px;border-top:1px solid #eff0f4}.composer textarea{min-height:48px;max-height:120px;resize:vertical;padding:13px 14px}.mic{flex:0 0 48px;width:48px;min-height:48px;padding:0;border:1px solid #e6e2fb;background:#f2efff;color:#674ede}.mic:hover,.mic.listening{background:#e8e1ff;color:#563cc6}.send{flex:0 0 48px;width:48px;min-height:48px;padding:0}.status{min-height:18px;margin:9px 0 0;color:#85899a;font-size:12px}.disclosure{margin:14px 0 0;color:#9295a3;font-size:11px;line-height:1.5}.footer{margin-top:19px;text-align:center;color:#9a9cab;font-size:12px}.toast{display:none;margin-top:15px;padding:12px 14px;border-radius:10px;background:#fff4e5;color:#805b20;font-size:13px}.toast.visible{display:block}@media(max-width:560px){.topbar{height:66px;padding:0 20px}.top-note{font-size:11px}main{margin-top:35px}.subtitle{font-size:14px}.card{padding:21px 17px;border-radius:17px}.voice-grid{gap:8px}.voice-card{gap:8px;padding:10px 8px}.voice-icon{flex-basis:35px;width:35px;height:35px}.voice-title{font-size:13px}.voice-caption{font-size:11px}.submit-row{align-items:stretch;flex-direction:column}.primary{width:100%}.message{max-width:93%}}
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand" aria-label="Voxora">
-      <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M4 10v4m4-8v12m4-15v18m4-14v10m4-7v4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
-      </span>
-      Voxora
-    </div>
-    <div class="top-note">Голосовой AI для вашего бизнеса</div>
-  </header>
-
+  <header class="topbar"><div class="brand" aria-label="Voxora"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 10v4m4-8v12m4-15v18m4-14v10m4-7v4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>Voxora</div><div class="top-note">Голосовой AI для вашего бизнеса</div></header>
   <main>
-    <section class="intro" aria-labelledby="page-title">
-      <div class="eyebrow"><span class="eyebrow-dot"></span> Ваш AI-ассистент начинается здесь</div>
-      <h1 id="page-title">Знакомьтесь, Voxora</h1>
-      <p class="subtitle">Создайте голосового ассистента, который понимает ваш бизнес и всегда готов помочь клиентам.</p>
-    </section>
-
-    <form class="card" id="assistant-form">
-      <div class="section-heading">
-        <div class="step-number" aria-hidden="true">1</div>
-        <div>
-          <h2>Расскажите о вашем бизнесе</h2>
-          <p class="section-description">Это поможет ассистенту лучше отвечать на вопросы клиентов.</p>
-        </div>
-      </div>
-
-      <label class="field-label" for="business-description">
-        Описание бизнеса <span class="optional">Можно заполнить позже</span>
-      </label>
-      <textarea id="business-description" name="business" placeholder="Например: семейная стоматология в центре города. Принимаем взрослых и детей, работаем ежедневно с 9:00 до 20:00. Можно записаться на приём по телефону…"></textarea>
-      <p class="hint">Добавьте услуги, часы работы и важную информацию для клиентов.</p>
-
-      <div class="divider" role="presentation"></div>
-
-      <div class="section-heading" style="margin-bottom:0">
-        <div class="step-number" aria-hidden="true">2</div>
-        <div>
-          <h2>Выберите голос ассистента</h2>
-          <p class="section-description">Вы сможете изменить его в любой момент.</p>
-        </div>
-      </div>
+    <section class="intro"><div class="eyebrow"><span class="eyebrow-dot"></span> Ассистент, который знает ваш бизнес</div><h1 id="page-title">Знакомьтесь, Voxora</h1><p class="subtitle">Создайте AI-ассистента, обученного на информации о вашей компании, и поговорите с ним голосом или в чате.</p></section>
+    <form class="card" id="setup-form">
+      <div class="section-heading"><div class="step">1</div><div><h2>Расскажите о вашем бизнесе</h2><p class="desc">Ассистент будет использовать это описание для ответов и не станет придумывать неизвестные факты.</p></div></div>
+      <label class="label" for="business">Название и информация о компании</label>
+      <textarea id="business" name="business" maxlength="12000" required placeholder="Например: семейная стоматология «Улыбка» в центре Казани. Принимаем взрослых и детей, ежедневно с 9:00 до 20:00. Услуги: осмотр, чистка, лечение кариеса. Запись по телефону +7 … Цены и свободное время уточняйте у администратора."></textarea>
+      <p class="hint">Укажите услуги, часы работы, адрес, правила записи и ответы на частые вопросы.</p>
+      <div class="divider"></div>
+      <div class="section-heading" style="margin-bottom:0"><div class="step">2</div><div><h2>Выберите голос</h2><p class="desc">Используется голос, доступный в вашем браузере и системе.</p></div></div>
       <div class="voice-grid" role="radiogroup" aria-label="Голос ассистента">
-        <label class="voice-option">
-          <input type="radio" name="voice" value="Мужской" checked />
-          <span class="voice-card">
-            <span class="voice-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 15a4 4 0 0 0 4-4V7a4 4 0 1 0-8 0v4a4 4 0 0 0 4 4Zm7-4a7 7 0 0 1-14 0m7 7v3m-4 0h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span><span class="voice-title">Мужской</span><span class="voice-caption" style="display:block">Уверенный и спокойный</span></span>
-            <span class="radio-dot" aria-hidden="true"></span>
-          </span>
-        </label>
-        <label class="voice-option">
-          <input type="radio" name="voice" value="Женский" />
-          <span class="voice-card">
-            <span class="voice-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 15a4 4 0 0 0 4-4V7a4 4 0 1 0-8 0v4a4 4 0 0 0 4 4Zm7-4a7 7 0 0 1-14 0m7 7v3m-4 0h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span><span class="voice-title">Женский</span><span class="voice-caption" style="display:block">Дружелюбный и тёплый</span></span>
-            <span class="radio-dot" aria-hidden="true"></span>
-          </span>
-        </label>
+        <label class="voice-option"><input type="radio" name="voice" value="male" checked><span class="voice-card"><span class="voice-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 15a4 4 0 0 0 4-4V7a4 4 0 1 0-8 0v4a4 4 0 0 0 4 4Zm7-4a7 7 0 0 1-14 0m7 7v3m-4 0h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><span class="voice-title">Мужской</span><span class="voice-caption">Уверенный и спокойный</span></span><span class="radio-dot"></span></span></label>
+        <label class="voice-option"><input type="radio" name="voice" value="female"><span class="voice-card"><span class="voice-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 15a4 4 0 0 0 4-4V7a4 4 0 1 0-8 0v4a4 4 0 0 0 4 4Zm7-4a7 7 0 0 1-14 0m7 7v3m-4 0h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><span class="voice-title">Женский</span><span class="voice-caption">Дружелюбный и тёплый</span></span><span class="radio-dot"></span></span></label>
       </div>
-
-      <div class="submit-row">
-        <div class="privacy-note">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 2.9 8.2 7 10 4.1-1.8 7-5.5 7-10V6l-7-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Данные бизнеса останутся под вашим контролем
-        </div>
-        <button class="primary-button" type="submit">
-          Создать ассистента
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-      </div>
-      <div class="result" id="result" role="status" aria-live="polite">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div><strong>Отличное начало!</strong><span id="result-message"></span></div>
-      </div>
+      <div class="submit-row"><div class="privacy"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 2.9 8.2 7 10 4.1-1.8 7-5.5 7-10V6l-7-3Z" stroke="currentColor" stroke-width="1.6"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Описание хранится в браузере</div><button class="primary" type="submit">Создать ассистента <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+      <div class="toast" id="setup-toast" role="status"></div>
     </form>
-    <div class="footer">Настройка займёт всего пару минут</div>
+    <section class="card chat" id="chat" aria-label="Чат с ассистентом">
+      <div class="chat-header"><div class="assistant-name"><span class="avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 10v4m4-8v12m4-15v18m4-14v10m4-7v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><div><strong id="chat-title">Voxora</strong><span class="online"><i></i>Готов к разговору</span></div></div><button type="button" class="reset" id="reset">Настроить заново</button></div>
+      <div class="messages" id="messages" aria-live="polite"></div>
+      <form class="composer" id="message-form"><textarea id="message" rows="1" maxlength="4000" aria-label="Ваш вопрос" placeholder="Напишите вопрос или нажмите на микрофон…"></textarea><button type="button" class="mic" id="mic" aria-label="Начать голосовой ввод" title="Голосовой ввод"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15a4 4 0 0 0 4-4V7a4 4 0 1 0-8 0v4a4 4 0 0 0 4 4Zm7-4a7 7 0 0 1-14 0m7 7v3m-4 0h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button><button type="submit" class="send" aria-label="Отправить сообщение" title="Отправить"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m4 4 16 8-16 8 3-8-3-8Zm3 8h13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button></form>
+      <p class="status" id="status" role="status"></p><p class="disclosure">Голосовой ввод работает через браузер. AI-ответы обрабатываются сервером и выбранным AI-провайдером; не отправляйте конфиденциальные данные клиентов.</p>
+    </section>
+    <div class="footer">Ваш AI-ассистент для звонков, вопросов и общения с клиентами</div>
   </main>
-
   <script>
-    const form = document.getElementById('assistant-form');
-    const result = document.getElementById('result');
-    const resultMessage = document.getElementById('result-message');
+    const setupForm=document.getElementById('setup-form');
+    const chat=document.getElementById('chat');
+    const businessInput=document.getElementById('business');
+    const messages=document.getElementById('messages');
+    const messageInput=document.getElementById('message');
+    const messageForm=document.getElementById('message-form');
+    const statusEl=document.getElementById('status');
+    const micButton=document.getElementById('mic');
+    let config=null;
+    let history=[];
+    let recognition=null;
+    let busy=false;
 
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const description = document.getElementById('business-description').value.trim();
-      const voice = new FormData(form).get('voice');
-      resultMessage.textContent = description
-        ? `Для вашего бизнеса будет подготовлен ассистент с ${voice.toLowerCase()} голосом. Описание сохранено в этой демо-сессии.`
-        : `Выбран ${voice.toLowerCase()} голос. Добавьте описание бизнеса, когда будете готовы.`;
-      result.classList.add('visible');
-      result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    });
+    function setConfig(next){
+      config=next;
+      try{localStorage.setItem('voxora-config',JSON.stringify(config));}catch{}
+      setupForm.style.display='none';
+      chat.classList.add('active');
+      document.getElementById('chat-title').textContent=config.name||'Voxora';
+      messages.replaceChildren();
+      history=[];
+      addMessage('Здравствуйте! Я голосовой ассистент компании. Чем могу помочь?','bot');
+      messageInput.focus();
+      chat.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+    function addMessage(text,kind){const bubble=document.createElement('div');bubble.className=`message ${kind}`;bubble.textContent=text;messages.append(bubble);messages.scrollTop=messages.scrollHeight;return bubble;}
+    function speak(text){if(!('speechSynthesis' in window))return;window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);utterance.lang='ru-RU';const selected=config?.voice||'male';const voices=window.speechSynthesis.getVoices();const russian=voices.filter(v=>v.lang.toLowerCase().startsWith('ru'));const genderHint=selected==='female'?/(female|woman|жен|alena|milena|katya|irina)/i:/(male|man|муж|dmitry|yuri|pavel)/i;utterance.voice=russian.find(v=>genderHint.test(`${v.name} ${v.voiceURI}`))||russian[0]||null;window.speechSynthesis.speak(utterance);}
+    async function sendMessage(text){const content=text.trim();if(!content||busy||!config)return;addMessage(content,'user');messageInput.value='';history.push({role:'user',content});busy=true;statusEl.textContent='Ассистент готовит ответ…';const pending=addMessage('Думаю…','bot');document.querySelectorAll('.composer button').forEach(button=>button.disabled=true);
+      try{const response=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({business:config.business,history:history.slice(-12),voice:config.voice})});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||`Ошибка сервера (${response.status})`);const answer=String(data.reply||'Не удалось получить ответ.');pending.textContent=answer;history.push({role:'assistant',content:answer});history=history.slice(-12);statusEl.textContent='';speak(answer);}
+      catch(error){pending.remove();history.pop();addMessage(error.message==='Failed to fetch'?'Не удалось подключиться к Voxora. Убедитесь, что приложение запущено через сервер (npm start), а не открыто как файл.':error.message,'error');statusEl.textContent='';}
+      finally{busy=false;document.querySelectorAll('.composer button').forEach(button=>button.disabled=false);messageInput.focus();}}
+    setupForm.addEventListener('submit',event=>{event.preventDefault();const business=businessInput.value.trim();if(!business){businessInput.focus();return;}setConfig({business,voice:new FormData(setupForm).get('voice')||'male',name:(business.split(/[\n.!?]/)[0].trim().slice(0,55)||'Voxora')});});
+    messageForm.addEventListener('submit',event=>{event.preventDefault();sendMessage(messageInput.value);});
+    document.getElementById('reset').addEventListener('click',()=>{if('speechSynthesis'in window)window.speechSynthesis.cancel();chat.classList.remove('active');setupForm.style.display='block';businessInput.value=config?.business||'';document.querySelector(`input[name="voice"][value="${config?.voice||'male'}"]`).checked=true;});
+    if('SpeechRecognition'in window||'webkitSpeechRecognition'in window){const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;recognition=new SpeechRecognition();recognition.lang='ru-RU';recognition.interimResults=true;recognition.continuous=false;recognition.onstart=()=>{micButton.classList.add('listening');statusEl.textContent='Слушаю… Говорите после сигнала браузера.';};recognition.onresult=event=>{let transcript='';for(let i=event.resultIndex;i<event.results.length;i++)transcript+=event.results[i][0].transcript;messageInput.value=transcript;if(event.results[event.results.length-1].isFinal)sendMessage(transcript);};recognition.onerror=event=>{statusEl.textContent=event.error==='not-allowed'?'Разрешите доступ к микрофону в настройках браузера.':'Не удалось распознать речь. Попробуйте ещё раз или напишите сообщение.';};recognition.onend=()=>{micButton.classList.remove('listening');if(statusEl.textContent==='Слушаю… Говорите после сигнала браузера.')statusEl.textContent='';};micButton.addEventListener('click',()=>{try{recognition.start();}catch{recognition.stop();}});}else{micButton.disabled=true;micButton.title='Распознавание речи не поддерживается этим браузером';micButton.setAttribute('aria-label','Распознавание речи не поддерживается');}
+    try{const saved=JSON.parse(localStorage.getItem('voxora-config')||'null');if(saved?.business)setConfig(saved);}catch{}
   </script>
 </body>
 </html>

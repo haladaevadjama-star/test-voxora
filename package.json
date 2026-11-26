@@ -1,0 +1,12 @@
+{
+  "name": "voxora-business-assistant",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Business voice assistant with browser speech recognition and a server-side AI integration.",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
